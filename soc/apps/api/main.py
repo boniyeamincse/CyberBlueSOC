@@ -9,6 +9,8 @@ from routers.tools import router as tools_router
 from routers.actions import router as actions_router
 from routers.metrics import router as metrics_router
 from routers.audit import router as audit_router
+from routers.incidents import router as incidents_router
+from routers.export import router as export_router
 from websocket import websocket_status_endpoint
 from config import settings
 
@@ -33,6 +35,8 @@ app.include_router(tools_router, prefix="/api", tags=["tools"])
 app.include_router(actions_router, prefix="/api", tags=["actions"])
 app.include_router(metrics_router, prefix="/api", tags=["metrics"])
 app.include_router(audit_router, prefix="/api", tags=["audit"])
+app.include_router(incidents_router, prefix="/api", tags=["incidents"])
+app.include_router(export_router, prefix="/api", tags=["export"])
 
 @app.get("/")
 async def root():

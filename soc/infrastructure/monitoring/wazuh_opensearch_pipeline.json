@@ -1,0 +1,132 @@
+{
+  "description": "Wazuh alerts pipeline for OpenSearch",
+  "processors": [
+    {
+      "set": {
+        "field": "event.ingested",
+        "value": "{{_ingest.timestamp}}"
+      }
+    },
+    {
+      "set": {
+        "field": "event.kind",
+        "value": "alert"
+      }
+    },
+    {
+      "set": {
+        "field": "event.category",
+        "value": "threat"
+      }
+    },
+    {
+      "set": {
+        "field": "event.type",
+        "value": ["info", "threat"]
+      }
+    },
+    {
+      "set": {
+        "field": "event.dataset",
+        "value": "wazuh.alerts"
+      }
+    },
+    {
+      "set": {
+        "field": "observer.name",
+        "value": "wazuh-manager"
+      }
+    },
+    {
+      "set": {
+        "field": "observer.product",
+        "value": "Wazuh"
+      }
+    },
+    {
+      "set": {
+        "field": "observer.vendor",
+        "value": "Wazuh Inc."
+      }
+    },
+    {
+      "set": {
+        "field": "observer.type",
+        "value": "log"
+      }
+    },
+    {
+      "set": {
+        "field": "observer.version",
+        "value": "4.7.2"
+      }
+    },
+    {
+      "rename": {
+        "field": "rule.id",
+        "target_field": "rule.id.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "rule.level",
+        "target_field": "rule.level.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "rule.description",
+        "target_field": "rule.description.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "rule.groups",
+        "target_field": "rule.groups.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "agent.id",
+        "target_field": "agent.id.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "agent.name",
+        "target_field": "agent.name.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "rename": {
+        "field": "agent.ip",
+        "target_field": "agent.ip.keyword",
+        "ignore_missing": true
+      }
+    },
+    {
+      "set": {
+        "field": "ecs.version",
+        "value": "8.0.0"
+      }
+    },
+    {
+      "date": {
+        "field": "timestamp",
+        "target_field": "@timestamp",
+        "formats": ["ISO8601"]
+      }
+    },
+    {
+      "remove": {
+        "field": "timestamp"
+      }
+    }
+  ]
+}

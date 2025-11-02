@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Play, Square, RotateCcw, ExternalLink, Key, Info } from 'lucide-react';
+import { Play, Square, RotateCcw, ExternalLink, Key, Info, AlertTriangle, FileDown } from 'lucide-react';
 import type { Tool } from '@/types/tool';
 
 interface ToolCardProps {
@@ -14,6 +14,8 @@ interface ToolCardProps {
   onOpen: () => void;
   onCredentials: () => void;
   onInfo: () => void;
+  onCreateCase?: () => void;
+  onExportCsv?: () => void;
 }
 
 const getStatusColor = (status: Tool['status']) => {
@@ -55,7 +57,9 @@ export const ToolCard: React.FC<ToolCardProps> = ({
   onAction,
   onOpen,
   onCredentials,
-  onInfo
+  onInfo,
+  onCreateCase,
+  onExportCsv
 }) => {
   return (
     <Card className={`cursor-pointer transition-all hover:shadow-lg rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-slate-700 hover:border-slate-600 ${
@@ -145,6 +149,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({
             <Button size="sm" variant="ghost" onClick={onInfo} className="p-1">
               <Info className="h-4 w-4" />
             </Button>
+            {onCreateCase && (
+              <Button size="sm" variant="ghost" onClick={onCreateCase} className="p-1">
+                <AlertTriangle className="h-4 w-4" />
+              </Button>
+            )}
+            {onExportCsv && (
+              <Button size="sm" variant="ghost" onClick={onExportCsv} className="p-1">
+                <FileDown className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         </div>
       </CardContent>
