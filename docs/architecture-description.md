@@ -156,7 +156,44 @@ The SOC tooling is organized into specialized security domains:
 ### API Integrations
 - **REST APIs**: Standard HTTP interfaces for all services
 - **WebSocket**: Real-time data streaming for dashboards
-- **GraphQL**: Flexible data querying (optional)
+- **GraphQL**: Flexible data querying with schema-driven APIs (optional)
+
+#### GraphQL Visualization Architecture
+
+The GraphQL layer provides a unified query interface for complex data relationships:
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   GraphQL       │    │   Data Loaders  │    │   Resolvers     │
+│   Schema        │◄──►│   Batching      │◄──►│   Field         │
+│   Types         │    │   Caching       │    │   Resolution    │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+         │                        │                        │
+         ▼                        ▼                        ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   PostgreSQL    │    │   Redis Cache   │    │   OpenSearch    │
+│   Relational    │    │   Session       │    │   Search        │
+│   Data          │    │   Store         │    │   Indices       │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+**GraphQL Schema Components**:
+- **Query Types**: `tools`, `alerts`, `incidents`, `metrics`
+- **Mutation Types**: `startTool`, `stopTool`, `createIncident`, `updateCase`
+- **Subscription Types**: `toolStatusChanged`, `alertReceived`, `metricUpdated`
+- **Custom Types**: `Tool`, `Alert`, `Incident`, `Metric`, `User`
+
+**Benefits**:
+- **Single Endpoint**: Unified API access instead of multiple REST endpoints
+- **Flexible Queries**: Clients request exactly the data they need
+- **Strong Typing**: Schema-driven development with type safety
+- **Real-time Updates**: Built-in subscription support for live data
+- **Efficient Batching**: DataLoader pattern prevents N+1 query problems
+
+**Implementation Options**:
+- **Apollo GraphQL**: Full-featured GraphQL server with federation support
+- **Graphene-Python**: Python library for building GraphQL APIs with FastAPI
+- **Strawberry**: Modern Python GraphQL library with dataclasses integration
 
 ### Third-party Tools
 - **SIEM Integration**: Wazuh, Splunk, ELK stack compatibility

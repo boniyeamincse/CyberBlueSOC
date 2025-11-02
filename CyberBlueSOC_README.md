@@ -11,8 +11,9 @@ It provides a unified dashboard to monitor, manage, and automate security tools 
 - **Unified Dashboard** — Manage tools like Wazuh, Velociraptor, MISP, Cortex, TheHive, Shuffle, and more.  
 - **Tool Control** — Start / Restart / Stop / View credentials per security tool.  
 - **Live Metrics** — CPU, Memory, and container health monitoring.  
-- **Smart Suggestions** — AI-based recommendations for next security actions.  
-- **WebSocket Updates** — Real-time tool and system status feed.  
+- **Smart Suggestions** — AI-based recommendations for next security actions.
+- **WebSocket Updates** — Real-time tool and system status feed.
+- **GraphQL API** — Flexible querying with schema-driven data access.
 - **Audit Logging** — Every action is logged with user, tool, and timestamp.  
 - **Dark Modern UI** — Built with React, Tailwind, and shadcn/ui.  
 - **Extensible Architecture** — Modular backend and container-ready.  
@@ -39,7 +40,7 @@ Frontend (React + Tailwind) ─▶ FastAPI Backend ─▶ PostgreSQL (Users, Log
 | Layer | Technology |
 |--------|-------------|
 | **Frontend** | React + Vite + Tailwind + shadcn/ui |
-| **Backend** | FastAPI (Python 3.11) |
+| **Backend** | FastAPI (Python 3.11) + GraphQL |
 | **Database** | PostgreSQL |
 | **Authentication** | Keycloak (OIDC) |
 | **Containerization** | Docker Compose |
