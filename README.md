@@ -24,14 +24,34 @@ CyberBlue is a modern, containerized Security Operations Center (SOC) platform t
 | **Monitoring** | Prometheus + Grafana | Metrics & Dashboards |
 | **Search** | OpenSearch | Log aggregation & analysis |
 | **Container** | Docker + Docker Compose | Orchestration & Deployment |
+| **WebSocket** | Native WebSocket | Real-time tool status updates |
+| **Documentation** | Markdown + SVG | User guides, API docs, architecture |
 
 ## Prerequisites
 
 - **Docker & Docker Compose**: Latest versions
 - **Node.js 18+**: For local frontend development
 - **Python 3.11+**: For local backend development
-- **4GB RAM**: Minimum for running all services
-- **10GB Disk Space**: For containers and data
+- **8GB RAM**: Minimum for running all SOC services (12GB recommended)
+- **20GB Disk Space**: For containers, databases, and logs (50GB recommended for production)
+- **4 CPU Cores**: Minimum (8 cores recommended for production workloads)
+
+### Recommended Ports
+
+**External Access:**
+- **443 (HTTPS)**: Main access port via Traefik reverse proxy
+
+**Internal Service Ports:**
+- **Keycloak**: 8080 (HTTP), 8443 (HTTPS)
+- **API Backend**: 8000 (FastAPI), 443 (HTTPS via reverse proxy)
+- **PostgreSQL**: 5432
+- **Wazuh**: 55000 (API), 1514/UDP (agents), 1515/TCP (agents)
+- **OpenSearch/Elasticsearch**: 9200 (HTTP), 9300 (transport)
+- **FleetDM**: 8080
+- **Osquery TLS**: 8080
+- **Grafana**: 3000
+- **Kibana**: 5601 (if used)
+- **Suricata EVE**: Local file/Unix socket → Filebeat ingestion
 
 ### System Requirements
 
@@ -364,6 +384,24 @@ KEYCLOAK_CLIENT_SECRET=secret
 ## Testing
 
 Use the provided Postman collection (`CyberBlueSOC.postman_collection.json`) for API testing.
+
+## Documentation
+
+### 📚 Complete Documentation Suite
+
+The CyberBlue SOC platform includes comprehensive documentation for users, administrators, and developers:
+
+- [**User Guide**](./docs/user-guide.md) - Step-by-step guide for SOC operators and analysts
+- [**Administrator Guide**](./docs/admin-guide.md) - System administration, user management, and configuration
+- [**Cheatsheet**](./docs/cheatsheet.md) - Quick reference for daily SOC operations
+- [**Development Documentation**](./docs/dev-docs.md) - API references, deployment guides, and contribution guidelines
+- [**System Architecture Diagram**](./docs/architecture-diagram.svg) - Visual overview of the platform architecture
+
+### 🚀 Quick Access Links
+
+- **Dashboard**: https://soc.local/ (after deployment)
+- **API Documentation**: https://api.soc.local/docs (after deployment)
+- **Grafana Dashboards**: https://grafana.soc.local/ (admin/change_me)
 
 ## License
 
