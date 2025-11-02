@@ -9,6 +9,7 @@ networks:
 volumes:
   pgdata:
   osdata:
+  suricata-logs:
 
 services:
   reverse-proxy:
@@ -91,3 +92,31 @@ services:
   cortex:
     image: thehiveproject/cortex:latest
     networks: [soc]
+
+  suricata:
+    image: jasonish/suricata:latest
+    command: ["-i", "eth0", "--af-packet", "-l", "/var/log/suricata", "-k", "none"]
+    environment:
+      - SURICATA_OPTIONS=-v
+    volumes:
+      - suricata-logs:/var/log/suricata
+      - ./suricata-rules:/etc/suricata/rules:ro
+      - ./suricata-config:/etc/suricata:ro
+    networks:
+      - soc
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    depends_on:
+      - opensearch
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat:8.9.0
+    volumes:
+      - suricata-logs:/var/log/suricata:ro
+      - ./filebeat-config/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+    networks:
+      - soc
+    depends_on:
+      - suricata
+      - opensearch

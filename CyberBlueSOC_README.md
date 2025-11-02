@@ -34,6 +34,7 @@ CyberBlueSOC is a **comprehensive, enterprise-grade Security Operations Center (
 - **REST API** — Comprehensive REST endpoints for third-party integrations
 - **SOAR Automation** — Workflow-based incident response with Shuffle playbooks
 - **Threat Intelligence** — IOC correlation with MISP and OpenCTI platforms
+- **Network IDS/IPS** — Suricata integration with Filebeat-OpenSearch pipeline for real-time threat detection
 - **Multi-Tool Support** — Native integration with 10+ security tools
 
 ### 🎨 Modern User Experience
@@ -129,6 +130,7 @@ Password: change_me
 | FleetDM | Endpoint Management | Osquery-based endpoint visibility |
 | Arkime | Network Analysis | Full packet capture and session engine |
 | Caldera | Attack Simulation | Adversary emulation framework |
+| Suricata | IDS/IPS | Real-time network threat detection and alerting |
 | Evebox | Intrusion Detection | Web viewer for Suricata EVE JSON logs |
 | Wireshark | Network Analysis | Protocol analyzer for traffic inspection |
 
@@ -241,6 +243,7 @@ make dev
 - AI-powered threat analysis and anomaly detection
 - Automated incident response workflows
 - Advanced threat intelligence integration
+- Network IDS/IPS with Suricata integration
 - Real-time alerting and notification systems
 
 ### 📋 Phase 3 - Enterprise Features (Planned)
