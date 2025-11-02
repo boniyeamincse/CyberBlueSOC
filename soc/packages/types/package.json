@@ -1,0 +1,7 @@
+{
+  "name": "@soc/types",
+  "version": "1.0.0",
+  "description": "Shared TypeScript types for CyberBlue SOC",
+  "main": "index.ts",
+  "types": "index.ts"
+}
