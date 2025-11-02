@@ -1,0 +1,123 @@
+{
+  "realm": "cyberbluesoc",
+  "displayName": "CyberBlue SOC",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "clients": [
+    {
+      "clientId": "cyberbluesoc-web",
+      "name": "CyberBlue SOC Web",
+      "description": "Web application client for CyberBlue SOC",
+      "enabled": true,
+      "protocol": "openid-connect",
+      "clientAuthenticatorType": "client-secret",
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": false,
+      "implicitFlowEnabled": false,
+      "standardFlowEnabled": true,
+      "publicClient": true,
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String",
+            "multivalued": "true"
+          }
+        }
+      ],
+      "webOrigins": [
+        "http://localhost:5173"
+      ],
+      "redirectUris": [
+        "http://localhost:5173/*"
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      {
+        "name": "admin",
+        "description": "Administrator role with full access",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "cyberbluesoc"
+      },
+      {
+        "name": "analyst",
+        "description": "Security analyst role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "cyberbluesoc"
+      },
+      {
+        "name": "manager",
+        "description": "Security manager role",
+        "composite": false,
+        "clientRole": false,
+        "containerId": "cyberbluesoc"
+      }
+    ]
+  },
+  "users": [
+    {
+      "username": "admin",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Admin",
+      "lastName": "User",
+      "email": "admin@cyberbluesoc.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "admin123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["admin"]
+    },
+    {
+      "username": "analyst",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Security",
+      "lastName": "Analyst",
+      "email": "analyst@cyberbluesoc.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "analyst123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["analyst"]
+    },
+    {
+      "username": "manager",
+      "enabled": true,
+      "emailVerified": true,
+      "firstName": "Security",
+      "lastName": "Manager",
+      "email": "manager@cyberbluesoc.com",
+      "credentials": [
+        {
+          "type": "password",
+          "value": "manager123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["manager"]
+    }
+  ]
+}
