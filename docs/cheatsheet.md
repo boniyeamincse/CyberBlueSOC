@@ -1,64 +1,62 @@
-# CyberBlue SOC Cheatsheet
+# CyberBlueSOC Cheatsheet
 
-## Quick Commands
+## User Operations
 
-### Deployment
+| Operation | Method | Description | Example |
+|-----------|--------|-------------|---------|
+| **Login** | Web UI | Access via Keycloak OIDC | Navigate to `https://soc.yourcompany.com` |
+| **Logout** | Web UI | Secure session termination | Click profile menu → Logout |
+| **Start Tool** | Web UI/API | Launch individual SOC tool | Click ▶️ button on tool card |
+| **Stop Tool** | Web UI/API | Gracefully shut down tool | Click ⏹️ button on tool card |
+| **Restart Tool** | Web UI/API | Restart with fresh config | Click 🔄 button on tool card |
+| **Bulk Start** | Web UI | Start multiple tools | Select tools → Bulk Actions → Start |
+| **Bulk Stop** | Web UI | Stop multiple tools | Select tools → Bulk Actions → Stop |
+| **View CPU/Memory** | Dashboard | Real-time resource metrics | Check "System Health" panel |
+| **View Tool Uptime** | Tool Cards | Individual tool status | Look at uptime counter on cards |
+| **Export CSV** | Web UI | Download tool inventory | Click "Export CSV" button |
+| **Export JSON** | API | Programmatic data export | `GET /api/export/json` |
 
-```bash
-# Production deployment
-cd infrastructure && docker compose up -d --build
+## Admin Operations
 
-# Development deployment
-cd docker-compose && docker-compose up -d --build
+| Operation | Method | Description | Command/Example |
+|-----------|--------|-------------|----------------|
+| **Add User** | Keycloak UI | Create new SOC user | `https://auth.company.com` → Users → Create user |
+| **Remove User** | Keycloak UI | Deactivate user account | Edit user → Disable account |
+| **Configure Roles** | Keycloak UI | Assign user permissions | User → Role mapping → Assign roles |
+| **Start Backend** | Docker | Launch API service | `docker compose up -d api` |
+| **Stop Backend** | Docker | Shutdown API service | `docker compose stop api` |
+| **Restart Frontend** | Docker | Reload web interface | `docker compose restart web` |
+| **Manage Backups** | CLI | Database backup/restore | `docker compose exec db pg_dump > backup.sql` |
+| **System Updates** | CLI | Update all containers | `docker compose pull && docker compose up -d` |
 
-# Stop all services
-docker compose down
+## Quick References
 
-# View logs
-docker compose logs -f
+### Key API Endpoints
 
-# Update services
-docker compose pull && docker compose up -d
-```
+| Endpoint | Method | Description | Authentication |
+|----------|--------|-------------|----------------|
+| `/api/me` | GET | Current user info | JWT Required |
+| `/api/tools` | GET | List all tools | JWT Required |
+| `/api/actions/{tool}/{operation}` | PUT | Control individual tool | Admin JWT |
+| `/api/export/csv` | GET | Export tool data | JWT Required |
+| `/ws/dashboard` | WS | Real-time updates | JWT Required |
 
-### Health Checks
+### WebSocket Messages
 
-```bash
-# API health
-curl https://api.soc.local/health
+| Message Type | Direction | Description | Example Payload |
+|--------------|-----------|-------------|----------------|
+| `tool_status` | Server→Client | Tool state changes | `{"tool": "wazuh", "status": "running"}` |
+| `alert_new` | Server→Client | New security alert | `{"id": "123", "severity": "high"}` |
+| `metric_update` | Server→Client | System metrics | `{"cpu": 45.2, "memory": 67.8}` |
 
-# Database connection
-docker compose exec db psql -U soc -d soc -c "SELECT 1;"
+### Common Troubleshooting
 
-# Keycloak status
-curl http://localhost:8080/realms/soc/.well-known/openid-connect-configuration
-```
-
-## User Management
-
-### Keycloak Operations
-
-```bash
-# Access admin console
-open https://auth.soc.local/
-
-# Default credentials
-admin / change_me
-
-# Create user via API
-curl -X POST https://auth.soc.local/admin/realms/soc/users \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{"username": "analyst", "enabled": true, "groups": ["analyst"]}'
-```
-
-### Role Permissions
-
-| Role | Dashboard | Tools | Incidents | Metrics | Audit | Admin |
-|------|-----------|-------|-----------|---------|-------|-------|
-| Admin | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full | ✅ Full |
-| Analyst | ✅ Read | ✅ Start/Stop | ✅ Create/Update | ✅ Read | ✅ Read | ❌ None |
-| Manager | ✅ Read | ❌ None | ✅ Read | ✅ Read | ✅ Export | ❌ None |
+| Issue | Quick Check | Resolution |
+|-------|-------------|------------|
+| **WebSocket Issues** | Browser dev tools | Check network tab, verify WSS connection |
+| **Login Problems** | Keycloak logs | Verify realm config, check user status |
+| **Tool Not Starting** | Container logs | `docker compose logs tool_name` |
+| **Slow Performance** | System metrics | Check CPU/memory, review database queries |
 
 ## Tool Management
 
@@ -357,9 +355,13 @@ curl -H "Authorization: Bearer $ACCESS_TOKEN" https://api.soc.local/api/tools
 
 ## Keyboard Shortcuts
 
-- `Ctrl+K`: Focus search
-- `Tab`: Navigate elements
-- `Enter`: Activate buttons
-- `Escape`: Close modals
-- `Ctrl+R`: Refresh data
-- `Ctrl+E`: Export current view
+| Shortcut | Context | Description |
+|----------|---------|-------------|
+| `Ctrl+K` / `Cmd+K` | Dashboard | Focus search bar |
+| `Tab` | Any | Navigate between interactive elements |
+| `Enter` | Buttons/Forms | Activate button or submit form |
+| `Escape` | Modals/Dialogs | Close modal or cancel action |
+| `Ctrl+R` / `Cmd+R` | Dashboard | Refresh all data |
+| `Ctrl+E` / `Cmd+E` | Tables | Export current view |
+| `Ctrl+F` / `Cmd+F` | Dashboard | Filter/search tools |
+| `Arrow Keys` | Tool Grid | Navigate tool cards |
