@@ -1,0 +1,45 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'cyberblue-soc'
+    static_configs:
+      - targets:
+        - 'api:8000'  # Backend API
+        - 'web:80'    # Frontend
+        - 'postgres:5432'  # Database
+        - 'keycloak:8080'  # Auth service
+    metrics_path: '/metrics'
+
+  - job_name: 'wazuh'
+    static_configs:
+      - targets:
+        - 'wazuh-manager:55000'
+        - 'wazuh-dashboard:5601'
+
+  - job_name: 'elasticsearch'
+    static_configs:
+      - targets:
+        - 'elasticsearch:9200'
+
+  - job_name: 'thehive'
+    static_configs:
+      - targets:
+        - 'thehive:9000'
+        - 'cortex:9001'
+
+  - job_name: 'misp'
+    static_configs:
+      - targets:
+        - 'misp:80'
+
+  - job_name: 'fleetdm'
+    static_configs:
+      - targets:
+        - 'fleetdm:8080'
+
+  - job_name: 'arkime'
+    static_configs:
+      - targets:
+        - 'arkime:8005'

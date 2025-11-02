@@ -1,18 +1,147 @@
 http:
   routers:
+    # Main application routes
     web:
       rule: "Host(`localhost`)"
       service: web
+      entryPoints:
+        - web
+
     api:
       rule: "Host(`localhost`) && PathPrefix(`/api`)"
       service: api
+      entryPoints:
+        - web
+
+    keycloak:
+      rule: "Host(`localhost`) && PathPrefix(`/auth`)"
+      service: keycloak
+      entryPoints:
+        - web
+
+    # SOC Tools routes
+    wazuh:
+      rule: "Host(`localhost`) && PathPrefix(`/wazuh`)"
+      service: wazuh
+      entryPoints:
+        - web
+
+    wazuh-dashboard:
+      rule: "Host(`localhost`) && PathPrefix(`/wazuh-dashboard`)"
+      service: wazuh-dashboard
+      entryPoints:
+        - web
+
+    shuffle:
+      rule: "Host(`localhost`) && PathPrefix(`/shuffle`)"
+      service: shuffle
+      entryPoints:
+        - web
+
+    misp:
+      rule: "Host(`localhost`) && PathPrefix(`/misp`)"
+      service: misp
+      entryPoints:
+        - web
+
+    arkime:
+      rule: "Host(`localhost`) && PathPrefix(`/arkime`)"
+      service: arkime
+      entryPoints:
+        - web
+
+    thehive:
+      rule: "Host(`localhost`) && PathPrefix(`/thehive`)"
+      service: thehive
+      entryPoints:
+        - web
+
+    cortex:
+      rule: "Host(`localhost`) && PathPrefix(`/cortex`)"
+      service: cortex
+      entryPoints:
+        - web
+
+    fleet:
+      rule: "Host(`localhost`) && PathPrefix(`/fleet`)"
+      service: fleet
+      entryPoints:
+        - web
+
+    prometheus:
+      rule: "Host(`localhost`) && PathPrefix(`/prometheus`)"
+      service: prometheus
+      entryPoints:
+        - web
+
+    grafana:
+      rule: "Host(`localhost`) && PathPrefix(`/grafana`)"
+      service: grafana
+      entryPoints:
+        - web
 
   services:
     web:
       loadBalancer:
         servers:
           - url: "http://web:80"
+
     api:
       loadBalancer:
         servers:
           - url: "http://api:8000"
+
+    keycloak:
+      loadBalancer:
+        servers:
+          - url: "http://keycloak:8080"
+
+    wazuh:
+      loadBalancer:
+        servers:
+          - url: "http://wazuh-manager:55000"
+
+    wazuh-dashboard:
+      loadBalancer:
+        servers:
+          - url: "http://wazuh-dashboard:5601"
+
+    shuffle:
+      loadBalancer:
+        servers:
+          - url: "http://shuffle:3001"
+
+    misp:
+      loadBalancer:
+        servers:
+          - url: "http://misp:80"
+
+    arkime:
+      loadBalancer:
+        servers:
+          - url: "http://arkime:8005"
+
+    thehive:
+      loadBalancer:
+        servers:
+          - url: "http://thehive:9000"
+
+    cortex:
+      loadBalancer:
+        servers:
+          - url: "http://cortex:9001"
+
+    fleet:
+      loadBalancer:
+        servers:
+          - url: "http://fleetdm:8080"
+
+    prometheus:
+      loadBalancer:
+        servers:
+          - url: "http://prometheus:9090"
+
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://grafana:3000"

@@ -7,8 +7,9 @@ interface ProtectedRouteProps {
   children: ReactNode;
 }
 
-const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children, requiredRoles }: ProtectedRouteProps & { requiredRoles?: string[] }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -21,10 +22,18 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
       }
 
       try {
-        await axios.get('http://localhost:8000/auth/me', {
+        const response = await axios.get('http://localhost:8000/auth/me', {
           headers: { Authorization: `Bearer ${token}` }
         });
         setIsAuthenticated(true);
+        setUserRole(response.data.role);
+
+        // Check role-based access
+        if (requiredRoles && !requiredRoles.includes(response.data.role)) {
+          console.error('Insufficient permissions for role:', response.data.role);
+          navigate('/unauthorized');
+          return;
+        }
       } catch (error) {
         console.error('Authentication check failed:', error);
         localStorage.removeItem('access_token');
@@ -35,7 +44,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     };
 
     checkAuth();
-  }, [navigate]);
+  }, [navigate, requiredRoles]);
 
   if (loading) {
     return (

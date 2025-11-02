@@ -26,7 +26,14 @@ async def start_tool(tool_id: int, db: AsyncSession = Depends(get_db), user: dic
     await db.commit()
 
     # Broadcast status update
-    await manager.broadcast(f"Tool {tool.name} started")
+    await manager.broadcast({
+        "type": "tool_status",
+        "action": "start",
+        "tool_id": tool_id,
+        "tool_name": tool.name,
+        "status": "running",
+        "timestamp": asyncio.get_event_loop().time()
+    })
 
     return {"message": f"Tool {tool.name} started"}
 
@@ -44,7 +51,14 @@ async def stop_tool(tool_id: int, db: AsyncSession = Depends(get_db), user: dict
     db.add(audit_log)
     await db.commit()
 
-    await manager.broadcast(f"Tool {tool.name} stopped")
+    await manager.broadcast({
+        "type": "tool_status",
+        "action": "stop",
+        "tool_id": tool_id,
+        "tool_name": tool.name,
+        "status": "stopped",
+        "timestamp": asyncio.get_event_loop().time()
+    })
 
     return {"message": f"Tool {tool.name} stopped"}
 
@@ -58,11 +72,25 @@ async def restart_tool(tool_id: int, db: AsyncSession = Depends(get_db), user: d
     # Mock restart sequence
     await db.execute(update(Tool).where(Tool.id == tool_id).values(status=ToolStatus.restarting))
     await db.commit()
-    await manager.broadcast(f"Tool {tool.name} restarting")
+    await manager.broadcast({
+        "type": "tool_status",
+        "action": "restart",
+        "tool_id": tool_id,
+        "tool_name": tool.name,
+        "status": "restarting",
+        "timestamp": asyncio.get_event_loop().time()
+    })
     await asyncio.sleep(2)  # Mock restart time
     await db.execute(update(Tool).where(Tool.id == tool_id).values(status=ToolStatus.running))
     await db.commit()
-    await manager.broadcast(f"Tool {tool.name} restarted")
+    await manager.broadcast({
+        "type": "tool_status",
+        "action": "restart",
+        "tool_id": tool_id,
+        "tool_name": tool.name,
+        "status": "running",
+        "timestamp": asyncio.get_event_loop().time()
+    })
 
     audit_log = AuditLog(user_id=user.id, action="restart", resource=f"tool:{tool_id}", details=f"Restarted tool {tool.name}")
     db.add(audit_log)

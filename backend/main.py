@@ -7,7 +7,7 @@ import uvicorn
 from .config import settings
 from .database import Base, get_db, engine
 from .models import User, Role, Tool, AuditLog
-from .routers import auth, tools, actions
+from .routers import auth, tools, actions, metrics, ai
 from .websocket import manager
 
 app = FastAPI(title="CyberBlue SOC API", version="1.0.0")
@@ -25,6 +25,8 @@ app.add_middleware(
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(tools.router, prefix="/tools", tags=["tools"])
 app.include_router(actions.router, prefix="/actions", tags=["actions"])
+app.include_router(metrics.router, prefix="/metrics", tags=["metrics"])
+app.include_router(ai.router, prefix="/ai", tags=["ai"])
 
 @app.on_event("startup")
 async def startup_event():

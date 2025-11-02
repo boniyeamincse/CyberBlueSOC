@@ -14,8 +14,8 @@ export const BulkActionsBar: React.FC<BulkActionsBarProps> = ({
   if (selectedCount === 0) return null;
 
   return (
-    <div className="flex items-center space-x-4 p-4 bg-blue-50 dark:bg-blue-900/20 border-b border-blue-200 dark:border-blue-800">
-      <span className="text-sm font-medium text-blue-700 dark:text-blue-300">
+    <div className="flex items-center space-x-4 p-4 bg-slate-800 dark:bg-slate-800 border-b border-slate-700 dark:border-slate-700">
+      <span className="text-sm font-medium text-slate-200 dark:text-slate-200">
         {selectedCount} tool{selectedCount > 1 ? 's' : ''} selected
       </span>
       <div className="flex space-x-2">

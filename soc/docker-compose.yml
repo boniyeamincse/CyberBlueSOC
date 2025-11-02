@@ -1,0 +1,93 @@
+version: "3.9"
+
+networks:
+  edge:
+    driver: bridge
+  soc:
+    driver: bridge
+
+volumes:
+  pgdata:
+  osdata:
+
+services:
+  reverse-proxy:
+    image: traefik:v2.11
+    command:
+      - "--providers.docker=true"
+      - "--entrypoints.websecure.address=:443"
+    ports: ["443:443"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./certs:/certs:ro
+    networks: [edge, soc]
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0
+    command: ["start-dev", "--http-port=8080"]
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: change_me
+    ports: ["8081:8080"]
+    networks: [soc]
+
+  api:
+    image: ghcr.io/yourorg/cyberbluesoc-api:latest   # replace with your build
+    environment:
+      DATABASE_URL: postgres://soc:soc@db:5432/soc
+      OIDC_ISSUER: http://keycloak:8080/realms/soc
+      OIDC_AUDIENCE: cyberbluesoc
+    depends_on: [db, keycloak]
+    networks: [soc]
+
+  frontend:
+    image: ghcr.io/yourorg/cyberbluesoc-web:latest   # React build served by nginx
+    networks: [soc]
+    labels:
+      - "traefik.http.routers.web.rule=Host(`soc.yourdomain.tld`)"
+      - "traefik.http.routers.web.entrypoints=websecure"
+      - "traefik.http.services.web.loadbalancer.server.port=80"
+
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: soc
+      POSTGRES_USER: soc
+      POSTGRES_PASSWORD: change_me
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks: [soc]
+
+  opensearch:
+    image: opensearchproject/opensearch:2
+    environment:
+      discovery.type: single-node
+      plugins.security.disabled: "true"
+    ports: ["9200:9200"]
+    volumes:
+      - osdata:/usr/share/opensearch/data
+    networks: [soc]
+
+  wazuh:
+    image: wazuh/wazuh:latest
+    networks: [soc]
+    # mount beats/agent configs as needed
+
+  grafana:
+    image: grafana/grafana:latest
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: change_me
+    ports: ["3000:3000"]
+    networks: [soc]
+
+  shuffle:
+    image: frikky/shuffle:latest
+    networks: [soc]
+
+  thehive:
+    image: strangebee/thehive:latest
+    networks: [soc]
+
+  cortex:
+    image: thehiveproject/cortex:latest
+    networks: [soc]

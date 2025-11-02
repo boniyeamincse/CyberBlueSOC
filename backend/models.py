@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Text
+from sqlalchemy import Column, Integer, String, DateTime, ForeignKey, Enum, Text, Float
 from sqlalchemy.orm import relationship
 from datetime import datetime
 import enum
@@ -55,3 +55,16 @@ class AuditLog(Base):
     timestamp = Column(DateTime, default=datetime.utcnow)
 
     user = relationship("User")
+
+class SystemMetrics(Base):
+    __tablename__ = "system_metrics"
+
+    id = Column(Integer, primary_key=True, index=True)
+    timestamp = Column(DateTime, default=datetime.utcnow, index=True)
+    active_agents = Column(Integer)
+    cpu_percent = Column(Float)
+    memory_percent = Column(Float)
+    memory_used = Column(Float)
+    memory_total = Column(Float)
+    uptime = Column(Float)
+    response_time = Column(Float)

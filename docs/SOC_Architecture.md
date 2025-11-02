@@ -25,11 +25,15 @@
         │                       │  Relational DB   │                         │  Time-series/Logs  │
         │                       │  PostgreSQL      │                         │  OpenSearch/ES     │
         │                       │  users, RBAC,    │                         │  Wazuh indices,    │
-        │                       │  cases, config   │                         │  Suricata, Zeek    │
-        │                       └────────┬─────────┘                         └──────────┬─────────┘
+        │                       │  cases, config,  │                         │  Suricata, Zeek,   │
+        │                       │  audit logs,     │                         │  system metrics    │
+        │                       │  metrics         │                         │  (CPU, memory,     │
+        │                       └────────┬─────────┘                         │   uptime, agents)  │
+        │                                 │                                           └──────────┬─────────┘
         │                                 │                                           ┌─┴─────────────────────┐
         │                                 │                                           │ Dashboards / Metrics  │
         │                                 │                                           │ Grafana/Kibana        │
+        │                                 │                                           │ React/Recharts        │
         │                                 │                                           └───────────────────────┘
         │                                 │
         │    ┌───────────────────────────────────────────────────────── SOC Tooling Network ──────────────────────────────────────────────────────┐

@@ -32,6 +32,25 @@ def require_role(roles: list[RoleEnum]):
         return user
     return role_checker
 
+# Role-based permission helpers
+def require_admin(user: User = Depends(get_current_user)):
+    """Requires admin role - full control (users, system setup, agents)"""
+    if user.role != RoleEnum.admin:
+        raise HTTPException(status_code=403, detail="Admin access required")
+    return user
+
+def require_analyst(user: User = Depends(get_current_user)):
+    """Requires analyst role - view dashboards, alerts, incidents"""
+    if user.role not in [RoleEnum.admin, RoleEnum.analyst]:
+        raise HTTPException(status_code=403, detail="Analyst or Admin access required")
+    return user
+
+def require_manager(user: User = Depends(get_current_user)):
+    """Requires manager role - overview reports, health, metrics"""
+    if user.role not in [RoleEnum.admin, RoleEnum.manager]:
+        raise HTTPException(status_code=403, detail="Manager or Admin access required")
+    return user
+
 @router.get("/callback")
 async def auth_callback(code: str):
     # Exchange code for tokens with Keycloak
@@ -58,3 +77,35 @@ async def get_me(user: User = Depends(get_current_user)):
         "last_name": user.last_name,
         "role": user.role.value
     }
+
+@router.post("/reset-password")
+async def reset_password_request(email: str, db: AsyncSession = Depends(get_db)):
+    """Initiate password reset process (requires Keycloak integration)"""
+    # TODO: Implement password reset logic with Keycloak
+    # This would typically send a reset email or SMS
+    result = await db.execute(select(User).where(User.email == email))
+    user = result.scalars().first()
+    if not user:
+        # Don't reveal if email exists or not for security
+        return {"message": "If the email exists, a reset link has been sent"}
+
+    # TODO: Generate reset token and send email/SMS
+    return {"message": "Password reset initiated"}
+
+@router.post("/reset-password-confirm")
+async def reset_password_confirm(token: str, new_password: str):
+    """Confirm password reset with token"""
+    # TODO: Verify reset token and update password in Keycloak
+    return {"message": "Password reset successfully"}
+
+@router.post("/enable-mfa")
+async def enable_mfa(user: User = Depends(require_admin)):
+    """Enable MFA for user (optional feature)"""
+    # TODO: Implement MFA setup with TOTP/SMS
+    return {"message": "MFA setup initiated"}
+
+@router.post("/verify-mfa")
+async def verify_mfa(code: str, user: User = Depends(get_current_user)):
+    """Verify MFA code during login"""
+    # TODO: Verify MFA code
+    return {"verified": True}

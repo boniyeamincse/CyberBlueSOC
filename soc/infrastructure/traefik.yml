@@ -1,0 +1,95 @@
+http:
+  middlewares:
+    security-headers:
+      headers:
+        customRequestHeaders:
+          X-Forwarded-Proto: "https"
+        customResponseHeaders:
+          X-Frame-Options: "DENY"
+          X-Content-Type-Options: "nosniff"
+          Referrer-Policy: "strict-origin-when-cross-origin"
+          Permissions-Policy: "geolocation=(), microphone=(), camera=()"
+        stsSeconds: 31536000
+        stsIncludeSubdomains: true
+        stsPreload: true
+        contentTypeNosniff: true
+        browserXssFilter: true
+        forceSTSHeader: true
+        frameDeny: true
+
+    rate-limit:
+      rateLimit:
+        burst: 100
+        average: 50
+
+  routers:
+    web:
+      rule: "Host(`soc.local`)"
+      service: web
+      middlewares:
+        - security-headers
+        - rate-limit
+      tls:
+        certResolver: letsencrypt
+
+    api:
+      rule: "Host(`api.soc.local`)"
+      service: api
+      middlewares:
+        - security-headers
+        - rate-limit
+      tls:
+        certResolver: letsencrypt
+
+    keycloak:
+      rule: "Host(`auth.soc.local`)"
+      service: keycloak
+      middlewares:
+        - security-headers
+        - rate-limit
+      tls:
+        certResolver: letsencrypt
+
+    grafana:
+      rule: "Host(`grafana.soc.local`)"
+      service: grafana
+      middlewares:
+        - security-headers
+        - rate-limit
+      tls:
+        certResolver: letsencrypt
+
+    opensearch:
+      rule: "Host(`opensearch.soc.local`)"
+      service: opensearch
+      middlewares:
+        - security-headers
+        - rate-limit
+      tls:
+        certResolver: letsencrypt
+
+  services:
+    web:
+      loadBalancer:
+        servers:
+          - url: "http://web:80"
+
+    api:
+      loadBalancer:
+        servers:
+          - url: "http://api:8000"
+
+    keycloak:
+      loadBalancer:
+        servers:
+          - url: "http://keycloak:8080"
+
+    grafana:
+      loadBalancer:
+        servers:
+          - url: "http://grafana:3000"
+
+    opensearch:
+      loadBalancer:
+        servers:
+          - url: "http://opensearch:9200"
