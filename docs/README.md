@@ -6,6 +6,9 @@ Welcome to the CyberBlue SOC platform documentation. This documentation provides
 
 | Document | Audience | Purpose |
 |----------|----------|---------|
+| **[📊 Comprehensive SOC Architecture](./comprehensive-soc-architecture.md)** | All Users | Complete system architecture with detailed diagrams |
+| **[🏗️ Architecture Description](./architecture-description.md)** | Developers, Architects | Detailed text-based architecture explanation |
+| **[🔧 SOC Architecture Diagram](./SOC_Architecture.md)** | All Users | ASCII visual representation of system components |
 | **[User Guide](./user-guide.md)** | SOC Analysts, Managers | How to use the platform for daily operations |
 | **[Admin Guide](./admin-guide.md)** | System Administrators | Installation, configuration, and maintenance |
 | **[Cheatsheet](./cheatsheet.md)** | All Users | Quick reference and common commands |
