@@ -21,6 +21,8 @@ It provides a unified dashboard to monitor, manage, and automate security tools 
 
 ## 🏗️ System Architecture Overview
 
+For a detailed text-based architecture description, see [`docs/architecture-description.md`](docs/architecture-description.md).
+
 ```
 Frontend (React + Tailwind) ─▶ FastAPI Backend ─▶ PostgreSQL (Users, Logs, Tools)
                                    │
