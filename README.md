@@ -3,6 +3,16 @@
 ## What It Is
 
 CyberBlue is a modern, containerized Security Operations Center (SOC) platform that provides a unified dashboard for managing and monitoring cybersecurity tools. Built with a microservices architecture, it offers role-based access control, real-time monitoring, and automated tool management for SOC teams.
+### 📚 Complete Documentation Suite
+
+The CyberBlue SOC platform includes comprehensive documentation for users, administrators, and developers:
+
+- [**User Guide**](./docs/user-guide.md) - Step-by-step guide for SOC operators and analysts
+- [**Administrator Guide**](./docs/admin-guide.md) - System administration, user management, and configuration
+- [**Cheatsheet**](./docs/cheatsheet.md) - Quick reference for daily SOC operations
+- [**Development Documentation**](./docs/dev-docs.md) - API references, deployment guides, and contribution guidelines
+- [**System Architecture Diagram**](./docs/architecture-diagram.svg) - Visual overview of the platform architecture
+
 
 **Key Capabilities:**
 - Unified SOC tool management and monitoring
@@ -387,15 +397,6 @@ Use the provided Postman collection (`CyberBlueSOC.postman_collection.json`) for
 
 ## Documentation
 
-### 📚 Complete Documentation Suite
-
-The CyberBlue SOC platform includes comprehensive documentation for users, administrators, and developers:
-
-- [**User Guide**](./docs/user-guide.md) - Step-by-step guide for SOC operators and analysts
-- [**Administrator Guide**](./docs/admin-guide.md) - System administration, user management, and configuration
-- [**Cheatsheet**](./docs/cheatsheet.md) - Quick reference for daily SOC operations
-- [**Development Documentation**](./docs/dev-docs.md) - API references, deployment guides, and contribution guidelines
-- [**System Architecture Diagram**](./docs/architecture-diagram.svg) - Visual overview of the platform architecture
 
 ### 🚀 Quick Access Links
 
