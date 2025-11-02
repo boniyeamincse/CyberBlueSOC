@@ -43,6 +43,154 @@ CyberBlueSOC is a **comprehensive, enterprise-grade Security Operations Center (
 - **Interactive Components** — Shadcn/ui component library for consistent UX
 - **Accessibility** — WCAG 2.1 compliant interface design
 
+## Core Features
+
+1. Secure User Authentication
+
+OIDC-based Authentication (Keycloak): Supports single sign-on (SSO) and role-based access control (RBAC) with Admin, Analyst, and Manager roles.
+
+Multi-factor Authentication (MFA): Add an extra layer of security for users logging into the platform.
+
+Role-based Access Control (RBAC): Enforces access restrictions based on user roles to ensure the right people have access to the right data and tools.
+
+2. Dashboard Overview
+
+Unified SOC Dashboard: A single-page dashboard displaying system health, tools status, alerts, and metrics for quick oversight.
+
+Real-Time Monitoring: View real-time data for security tools, network traffic, and system health (CPU, memory, container status).
+
+Alerts Feed: Real-time alert notifications for high-priority security events.
+
+Smart Suggestions: AI-driven recommendations to guide users on the next steps for incident response or monitoring.
+
+System Health Monitoring: Includes uptime, CPU, memory, disk space usage, and health metrics of the entire SOC infrastructure.
+
+3. Tools Management
+
+Tool Integration: Seamlessly integrate security tools like Wazuh, Velociraptor, MISP, Cortex, TheHive, Suricata, Arkime, and more.
+
+Tool Control: Start, stop, and restart security tools directly from the dashboard.
+
+Credential Management: Store and retrieve tool credentials securely for use within the platform.
+
+Tool Configuration: Edit configuration settings for connected tools directly from the UI.
+
+4. Real-Time Threat Detection
+
+Anomaly Detection: Detect unusual patterns in system behavior, network traffic, or security logs using machine learning models like Isolation Forest or Autoencoders.
+
+Threat Intelligence Integration: Correlate indicators of compromise (IOCs) from external threat intelligence platforms (e.g., MISP, VirusTotal) and internal logs.
+
+Intrusion Detection: Integrate with IDS/IPS tools like Suricata and Wazuh to identify potential malicious activities in real-time.
+
+Incident Severity Classification: AI-powered models classify incidents into high, medium, or low severity to prioritize response actions.
+
+Behavioral Analytics: Track normal user/system behavior and flag deviations that may indicate insider threats or malware.
+
+5. Incident Response Automation
+
+Automated Playbooks (SOAR): Automatically recommend and trigger response playbooks for common threats and incidents.
+
+Incident Management: Create, track, and manage incidents in TheHive with automated case generation and escalation based on threat severity.
+
+AI-Driven Incident Triage: Use AI to triage and prioritize security incidents based on their severity and historical data.
+
+Actionable Alerts: Automatically trigger predefined actions like IP blocking, quarantining, or system shutdown upon detection of critical threats.
+
+6. Threat Hunting
+
+Intelligent Query Generation: Use AI to generate custom queries for threat hunting based on past incidents, attack vectors, or trends.
+
+Behavioral Threat Hunting: Use machine learning to identify abnormal user or system behaviors and flag suspicious activities.
+
+Advanced Log Analysis: Search through system and network logs using a sophisticated query interface to detect signs of advanced persistent threats (APTs).
+
+AI-based Detection: Implement machine learning models for real-time threat detection and reporting based on historical patterns.
+
+7. AI-Powered Alert Prioritization & Triage
+
+Alert Correlation: AI algorithms automatically correlate alerts from different tools (e.g., Wazuh, Suricata) into single incidents for easier investigation.
+
+Alert Severity Ranking: AI ranks alerts based on threat likelihood and impact, automatically filtering out false positives.
+
+Incident Classification: Classify incidents by severity and urgency to streamline response and focus on high-priority issues.
+
+8. AI-Powered Vulnerability Management
+
+Automated Vulnerability Scanning: Integrate with vulnerability scanners to automatically identify and catalog vulnerabilities in the network.
+
+AI Risk Scoring: Use machine learning to assign risk scores to vulnerabilities based on exploitability, impact, and threat intelligence feeds.
+
+Vulnerability Prioritization: Prioritize remediation of vulnerabilities based on AI analysis, minimizing risk exposure.
+
+9. Phishing Detection
+
+Email Phishing Detection: AI-based models analyze email content, headers, and attachments to detect potential phishing attempts.
+
+Phishing Simulation: Test users' ability to recognize phishing emails by simulating phishing attacks within the organization.
+
+Automated Response: Automatically quarantine or block identified phishing emails to prevent user interaction with malicious links or attachments.
+
+10. Data Exfiltration Detection
+
+Traffic Anomaly Detection: AI models detect unusual data transfers or network activity that could indicate data exfiltration.
+
+DLP Integration: Integration with Data Loss Prevention (DLP) systems to prevent unauthorized access or transfer of sensitive data.
+
+Automated Alerts and Actions: Trigger alerts and automatic actions (e.g., blocking an IP or network) when data exfiltration patterns are detected.
+
+11. AI-Driven Reporting
+
+Automated Report Generation: Generate incident and system reports automatically using AI models that summarize the findings and actions taken.
+
+Customizable Reporting: Allow users to generate custom reports based on tool data, alerts, and security metrics.
+
+Incident Documentation: AI-driven assistance in documenting incidents and response actions, making it easy to create compliance-ready reports.
+
+12. Graphical Visualization & Dashboards
+
+Interactive Dashboards: View graphical representations of security data such as alerts, tool health, incidents, and threat intelligence feeds.
+
+Real-Time Metrics Visualization: Use Grafana or similar tools to visualize real-time metrics, including system health, user behavior, and network traffic.
+
+Threat Map: Global visualization of incoming attacks, including their geographic origin and targeted regions.
+
+Historical Data Views: View historical trends in system health, security incidents, and attack activity.
+
+13. Incident Collaboration & Case Management
+
+Case Tracking: Manage security incidents with integrated case management (e.g., TheHive) for collaborative investigation.
+
+Team Collaboration: Provide collaborative features for SOC teams to work on incidents, share findings, and assign tasks.
+
+Escalation Management: Automatically escalate critical incidents based on severity or time-to-resolution metrics.
+
+14. Real-Time Communication
+
+WebSocket Support: Push real-time updates to the dashboard (e.g., tool health, alert status, system health) using WebSockets.
+
+Integration with ChatOps: Integrate with communication tools like Slack or Microsoft Teams for real-time notifications and chat-based incident management.
+
+Live Incident Monitoring: View live updates of ongoing incidents, including the number of open cases and status of active response actions.
+
+15. Backup and Recovery
+
+Automated Backups: Schedule regular backups of the database, configuration files, and incident data to ensure system integrity.
+
+Disaster Recovery: Implement disaster recovery procedures for seamless recovery of critical data in case of failure.
+
+Restore Tools & Data: Restore configuration, tool states, and user data to previous states when necessary.
+
+Additional Features (Stretch Goals)
+
+Mobile Access: Create a mobile app or responsive web interface for managing security incidents on the go.
+
+Integrations with Other SOC Tools: Extend integrations with additional third-party tools like Elastic Stack, Splunk, and CrowdStrike for enhanced detection and response.
+
+Custom Plugin Support: Allow users to add custom security tools or integrate with other third-party software as plugins within the SOC.
+
+Machine Learning Model Management: Allow users to upload and manage custom machine learning models for threat detection or alert classification.
+
 ---
 
 ## 🏗️ System Architecture Overview
