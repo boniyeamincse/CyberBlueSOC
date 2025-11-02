@@ -12,8 +12,8 @@ interface NavBarProps {
   categoryFilter: string;
   onStatusFilterChange: (value: string) => void;
   onCategoryFilterChange: (value: string) => void;
-  currentView?: 'dashboard' | 'metrics' | 'audit' | 'ai';
-  onViewChange?: (view: 'dashboard' | 'metrics' | 'audit' | 'ai') => void;
+  currentView?: 'dashboard' | 'metrics' | 'audit' | 'ai' | 'anomalies';
+  onViewChange?: (view: 'dashboard' | 'metrics' | 'audit' | 'ai' | 'anomalies') => void;
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
@@ -100,6 +100,16 @@ export const NavBar: React.FC<NavBarProps> = ({
               }`}
             >
               AI Assistant
+            </button>
+            <button
+              onClick={() => onViewChange?.('anomalies')}
+              className={`text-sm font-medium pb-1 ${
+                currentView === 'anomalies'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200'
+              }`}
+            >
+              Anomalies
             </button>
           </div>
         </div>

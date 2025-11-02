@@ -1,11 +1,14 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select
+from sqlalchemy import select, and_, desc
 from ..database import get_db
-from ..models import Tool, AuditLog
+from ..models import Tool, AuditLog, AnomalyDetection, AnomalySeverity
 from ..routers.auth import get_current_user
+from ..anomaly_detection import anomaly_service
 import openai
 import json
+from typing import List, Optional
+from pydantic import BaseModel
 
 router = APIRouter()
 
@@ -110,3 +113,136 @@ async def chat_with_ai(message: str, db: AsyncSession = Depends(get_db), user: d
         "timestamp": "2023-11-02T10:50:00Z",
         "suggestions": []  # Could include follow-up actions
     }
+
+
+# Anomaly Detection API Endpoints
+class AnomalyAcknowledgeRequest(BaseModel):
+    anomaly_ids: List[int]
+
+class AnomalyFilterRequest(BaseModel):
+    severity: Optional[str] = None
+    acknowledged: Optional[bool] = None
+    limit: int = 50
+
+@router.get("/anomalies")
+async def get_anomalies(
+    filter_request: AnomalyFilterRequest = None,
+    db: AsyncSession = Depends(get_db),
+    user: dict = Depends(get_current_user)
+):
+    """Get detected anomalies with optional filtering"""
+    if filter_request is None:
+        filter_request = AnomalyFilterRequest()
+
+    query = select(AnomalyDetection)
+
+    # Apply filters
+    if filter_request.severity:
+        try:
+            severity_enum = AnomalySeverity(filter_request.severity)
+            query = query.where(AnomalyDetection.severity == severity_enum)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid severity value")
+
+    if filter_request.acknowledged is not None:
+        query = query.where(AnomalyDetection.acknowledged == filter_request.acknowledged)
+
+    # Order by timestamp (most recent first)
+    query = query.order_by(desc(AnomalyDetection.timestamp)).limit(filter_request.limit)
+
+    result = await db.execute(query)
+    anomalies = result.scalars().all()
+
+    return {
+        "anomalies": [
+            {
+                "id": a.id,
+                "timestamp": a.timestamp.isoformat(),
+                "type": a.type.value,
+                "severity": a.severity.value,
+                "score": a.score,
+                "description": a.description,
+                "details": a.details,
+                "source": a.source,
+                "acknowledged": a.acknowledged,
+                "acknowledged_by": a.acknowledged_by,
+                "acknowledged_at": a.acknowledged_at.isoformat() if a.acknowledged_at else None
+            }
+            for a in anomalies
+        ],
+        "total": len(anomalies)
+    }
+
+@router.post("/anomalies/acknowledge")
+async def acknowledge_anomalies(
+    request: AnomalyAcknowledgeRequest,
+    db: AsyncSession = Depends(get_db),
+    user: dict = Depends(get_current_user)
+):
+    """Acknowledge one or more anomalies"""
+    # Get user ID from keycloak ID
+    from ..models import User
+    result = await db.execute(
+        select(User).where(User.keycloak_id == user.get("sub"))
+    )
+    db_user = result.scalar_one_or_none()
+
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    # Update anomalies
+    query = select(AnomalyDetection).where(AnomalyDetection.id.in_(request.anomaly_ids))
+    result = await db.execute(query)
+    anomalies = result.scalars().all()
+
+    updated_count = 0
+    for anomaly in anomalies:
+        if not anomaly.acknowledged:
+            anomaly.acknowledged = True
+            anomaly.acknowledged_by = db_user.id
+            anomaly.acknowledged_at = datetime.utcnow()
+            updated_count += 1
+
+    await db.commit()
+
+    return {
+        "message": f"Acknowledged {updated_count} anomalies",
+        "updated_count": updated_count
+    }
+
+@router.post("/anomalies/detect")
+async def detect_anomalies_now(
+    db: AsyncSession = Depends(get_db),
+    user: dict = Depends(get_current_user)
+):
+    """Trigger real-time anomaly detection on current system metrics"""
+    try:
+        # Process current metrics and detect anomalies
+        detected_anomalies = await anomaly_service.process_current_metrics(db)
+
+        return {
+            "message": f"Detected {len(detected_anomalies)} anomalies",
+            "anomalies": detected_anomalies
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Anomaly detection failed: {str(e)}")
+
+@router.post("/anomalies/train")
+async def train_anomaly_models(
+    db: AsyncSession = Depends(get_db),
+    user: dict = Depends(get_current_user)
+):
+    """Train anomaly detection models with historical data"""
+    try:
+        await anomaly_service.train_all_models(db)
+        return {
+            "message": "Anomaly detection models trained successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Model training failed: {str(e)}")
+
+# Initialize anomaly detection service on startup
+@router.on_event("startup")
+async def startup_event():
+    """Initialize anomaly detection service on application startup"""
+    anomaly_service.load_models()

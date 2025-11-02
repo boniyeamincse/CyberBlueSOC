@@ -7,6 +7,7 @@ import { Modal } from '../components/Modal';
 import { MetricsDashboard } from '../components/MetricsDashboard';
 import { AuditLogViewer } from '../components/AuditLogViewer';
 import { AIAssistant } from '../components/AIAssistant';
+import { AnomalyAlerts } from '../components/AnomalyAlerts';
 import { seedTools } from '@/data/tools';
 import type { Tool } from '../types/tool';
 
@@ -16,7 +17,7 @@ const Dashboard = () => {
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
   const [modalType, setModalType] = useState<'open' | 'credentials' | 'info' | null>(null);
   const [selectedTool, setSelectedTool] = useState<Tool | null>(null);
-  const [currentView, setCurrentView] = useState<'dashboard' | 'metrics' | 'audit' | 'ai'>('dashboard');
+  const [currentView, setCurrentView] = useState<'dashboard' | 'metrics' | 'audit' | 'ai' | 'anomalies'>('dashboard');
 
   const filteredTools = useMemo(() => {
     return seedTools.filter(tool => {
@@ -83,6 +84,8 @@ const Dashboard = () => {
         return <AuditLogViewer />;
       case 'ai':
         return <AIAssistant />;
+      case 'anomalies':
+        return <AnomalyAlerts />;
       default:
         return (
           <>

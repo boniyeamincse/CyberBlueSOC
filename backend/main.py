@@ -6,9 +6,11 @@ import uvicorn
 
 from .config import settings
 from .database import Base, get_db, engine
-from .models import User, Role, Tool, AuditLog
+from .models import User, Role, Tool, AuditLog, SystemMetrics, AnomalyDetection
 from .routers import auth, tools, actions, metrics, ai
 from .websocket import manager
+from .anomaly_detection import anomaly_service
+import asyncio
 
 app = FastAPI(title="CyberBlue SOC API", version="1.0.0")
 
@@ -33,6 +35,20 @@ async def startup_event():
     # Create database tables
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+
+    # Start anomaly detection background task
+    asyncio.create_task(anomaly_detection_worker())
+
+async def anomaly_detection_worker():
+    """Background worker for continuous anomaly detection"""
+    while True:
+        try:
+            async with AsyncSession(engine) as db:
+                # Run anomaly detection every 30 seconds
+                await anomaly_service.process_current_metrics(db)
+        except Exception as e:
+            print(f"Anomaly detection error: {e}")
+        await asyncio.sleep(30)  # Check every 30 seconds
 
 @app.websocket("/ws/tools")
 async def websocket_endpoint(websocket):
