@@ -1,7 +1,11 @@
-# 🛡️ CyberBlueSOC - Security Operations Center Platform
+# 🛡️ CyberBlueSOC - Enterprise Security Operations Center Platform
 
-CyberBlueSOC is a **next-generation Security Operations Center (SOC) platform** built for defenders, blue teams, and cybersecurity researchers.  
-It provides a unified dashboard to monitor, manage, and automate security tools — all in one place.
+CyberBlueSOC is a **comprehensive, enterprise-grade Security Operations Center (SOC) platform** designed for modern cybersecurity operations. Built with cutting-edge technologies and following security best practices, it provides a unified command center for threat detection, incident response, and security tool orchestration.
+
+[![GitHub](https://img.shields.io/badge/GitHub-CyberBlueSOC-blue)](https://github.com/boniyeamincse/CyberBlueSOC)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue)](https://docker.com)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue)](https://python.org)
 
 ---
 
@@ -11,12 +15,32 @@ It provides a unified dashboard to monitor, manage, and automate security tools 
 - **Unified Dashboard** — Manage tools like Wazuh, Velociraptor, MISP, Cortex, TheHive, Shuffle, and more.  
 - **Tool Control** — Start / Restart / Stop / View credentials per security tool.  
 - **Live Metrics** — CPU, Memory, and container health monitoring.  
-- **Smart Suggestions** — AI-based recommendations for next security actions.
-- **WebSocket Updates** — Real-time tool and system status feed.
-- **GraphQL API** — Flexible querying with schema-driven data access.
-- **Audit Logging** — Every action is logged with user, tool, and timestamp.  
-- **Dark Modern UI** — Built with React, Tailwind, and shadcn/ui.  
-- **Extensible Architecture** — Modular backend and container-ready.  
+### 🔐 Enterprise Security Features
+- **Zero-Trust Architecture** — Identity-based access control with continuous verification
+- **Multi-Factor Authentication** — Enhanced security with Keycloak OIDC integration
+- **Role-Based Access Control** — Granular permissions for Admin, Analyst, and Manager roles
+- **End-to-End Encryption** — TLS 1.3 with certificate-based authentication
+- **Audit Trail** — Comprehensive logging of all user actions and system events
+
+### 🎯 SOC Operations
+- **Unified Dashboard** — Single pane of glass for all integrated security tools
+- **Real-Time Monitoring** — Live metrics, alerts, and system health visualization
+- **Tool Orchestration** — Automated start/stop/restart of security services
+- **Smart Suggestions** — AI-powered recommendations for threat hunting and response
+- **WebSocket Updates** — Instant notifications and live data streaming
+
+### 🔗 Advanced Integrations
+- **GraphQL API** — Flexible, schema-driven data access and real-time subscriptions
+- **REST API** — Comprehensive REST endpoints for third-party integrations
+- **SOAR Automation** — Workflow-based incident response with Shuffle playbooks
+- **Threat Intelligence** — IOC correlation with MISP and OpenCTI platforms
+- **Multi-Tool Support** — Native integration with 10+ security tools
+
+### 🎨 Modern User Experience
+- **Responsive Design** — Optimized for desktop, tablet, and mobile devices
+- **Dark Theme UI** — Built with React, TypeScript, and Tailwind CSS
+- **Interactive Components** — Shadcn/ui component library for consistent UX
+- **Accessibility** — WCAG 2.1 compliant interface design
 
 ---
 
@@ -75,8 +99,8 @@ Frontend (React + Tailwind) ─▶ FastAPI Backend ─▶ PostgreSQL (Users, Log
 ### Setup Steps
 
 ```bash
-git clone https://github.com/<your-org>/cyberbluesoc.git
-cd cyberbluesoc
+git clone https://github.com/boniyeamincse/CyberBlueSOC.git
+cd CyberBlueSOC
 
 # Start everything
 docker compose up -d --build
@@ -162,13 +186,82 @@ docker compose up -d --build
 
 ---
 
-## 📊 Future Roadmap
+## 📋 Documentation & Resources
 
-- ✅ Core dashboard & RBAC login  
-- ⏳ Integrate Wazuh & TheHive alerts feed  
-- ⏳ Add AI Analyst (GPT-assisted investigation)  
-- ⏳ Export reports (PDF/CSV)  
-- ⏳ Mobile SOC app  
+- **📚 [Complete Documentation](./docs/)** — Comprehensive guides for all user types
+- **🏗️ [System Architecture](./docs/comprehensive-soc-architecture.md)** — Detailed technical architecture
+- **🔧 [Developer Guide](./docs/dev-docs.md)** — API documentation and contribution guidelines
+- **📖 [User Manual](./docs/user-guide.md)** — Step-by-step operational procedures
+- **⚙️ [Admin Guide](./docs/admin-guide.md)** — Installation and configuration guide
+
+## 🤝 Contributing
+
+We welcome contributions from the cybersecurity community! Here's how to get involved:
+
+### Ways to Contribute
+- **🐛 Bug Reports** — Report issues via [GitHub Issues](https://github.com/boniyeamincse/CyberBlueSOC/issues)
+- **💡 Feature Requests** — Suggest new capabilities or improvements
+- **🔧 Code Contributions** — Submit pull requests for bug fixes or enhancements
+- **📖 Documentation** — Help improve documentation and guides
+- **🧪 Testing** — Test new features and provide feedback
+
+### Development Setup
+```bash
+# Fork and clone the repository
+git clone https://github.com/YOUR_USERNAME/CyberBlueSOC.git
+cd CyberBlueSOC
+
+# Set up development environment
+make setup-dev
+
+# Run tests
+make test
+
+# Start development servers
+make dev
+```
+
+### Contribution Guidelines
+- Follow the existing code style and architecture patterns
+- Write comprehensive tests for new features
+- Update documentation for any user-facing changes
+- Use conventional commit messages
+- Ensure all CI/CD checks pass
+
+## 📊 Project Roadmap
+
+### ✅ Phase 1 - Core Platform (Completed)
+- Enterprise-grade authentication and authorization
+- Unified dashboard with real-time monitoring
+- Containerized deployment with Docker
+- Comprehensive API (REST, GraphQL, WebSocket)
+- Production-ready security hardening
+
+### 🚧 Phase 2 - Advanced SOC Operations (In Progress)
+- AI-powered threat analysis and anomaly detection
+- Automated incident response workflows
+- Advanced threat intelligence integration
+- Real-time alerting and notification systems
+
+### 📋 Phase 3 - Enterprise Features (Planned)
+- Multi-tenancy and role customization
+- Advanced reporting and compliance dashboards
+- Mobile application for SOC operations
+- Integration with enterprise SIEM platforms
+
+### 🔮 Phase 4 - AI & Automation (Future)
+- Machine learning for threat prediction
+- Automated threat hunting capabilities
+- Natural language processing for incident analysis
+- Predictive security analytics
+
+## 🌟 Community & Support
+
+- **📧 Email**: boniyeamin.cse@gmail.com
+- **🌐 Website**: [www.ntasbd.com](https://www.ntasbd.com)
+- **🐙 GitHub**: [github.com/boniyeamincse/CyberBlueSOC](https://github.com/boniyeamincse/CyberBlueSOC)
+- **💬 Discussions**: Use [GitHub Discussions](https://github.com/boniyeamincse/CyberBlueSOC/discussions) for questions
+- **🆘 Security Issues**: Report security vulnerabilities privately to security@cyberbluesoc.local
 
 ---
 
